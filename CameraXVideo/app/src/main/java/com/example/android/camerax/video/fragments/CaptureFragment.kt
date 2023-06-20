@@ -302,11 +302,14 @@ class CaptureFragment : Fragment() {
 
     private fun createCameraEffect(): CameraFiltersAdapter? {
         // Add Media3/ImageX Effects
+        val matrix = FloatArray(16)
+        android.opengl.Matrix.setIdentityM(matrix, 0)
+        android.opengl.Matrix.translateM(matrix, 0, -0.7f, 0.7f, 0f)
         val overlay = BitmapOverlay.createStaticBitmapOverlay(
             BitmapFactory.decodeResource(
                 resources,
                 R.drawable.ic_launcher
-            ), OverlaySettings.Builder().build()
+            ), OverlaySettings.Builder().setMatrix(matrix).build()
         ) as TextureOverlay
         val allEffects = listOf(OverlayEffect(ImmutableList.of(overlay)))
         try {
@@ -611,7 +614,9 @@ class CaptureFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _captureViewBinding = null
-        cameraEffect.release()
+        if (this::cameraEffect.isInitialized) {
+            cameraEffect.release()
+        }
         super.onDestroyView()
     }
 

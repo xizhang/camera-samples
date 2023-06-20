@@ -17,7 +17,7 @@ class SimpleVideoFrameProcessorListener : VideoFrameProcessor.Listener {
     }
 
     override fun onError(exception: VideoFrameProcessingException) {
-        Log.d(TAG, "On error")
+        Log.d(TAG, "On error", exception)
     }
 
     override fun onEnded() {
